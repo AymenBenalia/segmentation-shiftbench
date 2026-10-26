@@ -1,0 +1,125 @@
+{
+  "tool_version": "0.1.0",
+  "config": {
+    "seed": 42,
+    "epochs": 12,
+    "specimens": 40,
+    "views": 3,
+    "size": 64,
+    "batch_size": 8,
+    "learning_rate": 0.003,
+    "bootstrap": 1000,
+    "threads": 2
+  },
+  "dataset_sha256": "e892becbca24691ed99b0dc29f804c195b9a67cd4376d6fc69840aca6958f49c",
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.14.1",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.9.1",
+    "device": "cpu"
+  },
+  "split_counts": {
+    "train": {
+      "images": 72,
+      "specimens": 24
+    },
+    "validation": {
+      "images": 24,
+      "specimens": 8
+    },
+    "test": {
+      "images": 24,
+      "specimens": 8
+    }
+  },
+  "data": "Generated geometric ring phantoms. No clinical or microscopy acquisitions.",
+  "checkpoint_selection": "Minimum clean validation cross-entropy, independently for each model.",
+  "initialization": "Same model seed and data-order seed for both training conditions.",
+  "conditions": [
+    {
+      "name": "clean",
+      "family": "clean",
+      "severity": 0,
+      "value": 0
+    },
+    {
+      "name": "noise-1",
+      "family": "noise",
+      "severity": 1,
+      "value": 0.06
+    },
+    {
+      "name": "noise-2",
+      "family": "noise",
+      "severity": 2,
+      "value": 0.12
+    },
+    {
+      "name": "noise-3",
+      "family": "noise",
+      "severity": 3,
+      "value": 0.2
+    },
+    {
+      "name": "gamma-1",
+      "family": "gamma",
+      "severity": 1,
+      "value": 1.3
+    },
+    {
+      "name": "gamma-2",
+      "family": "gamma",
+      "severity": 2,
+      "value": 1.7
+    },
+    {
+      "name": "gamma-3",
+      "family": "gamma",
+      "severity": 3,
+      "value": 2.2
+    },
+    {
+      "name": "blur-1",
+      "family": "blur",
+      "severity": 1,
+      "value": 0.5
+    },
+    {
+      "name": "blur-2",
+      "family": "blur",
+      "severity": 2,
+      "value": 1.0
+    },
+    {
+      "name": "blur-3",
+      "family": "blur",
+      "severity": 3,
+      "value": 1.5
+    }
+  ],
+  "training_augmentation": {
+    "gamma": [
+      0.7,
+      1.5
+    ],
+    "brightness_offset": [
+      -0.08,
+      0.08
+    ],
+    "noise_sigma": [
+      0,
+      0.08
+    ]
+  },
+  "metric": "Per-image mean Dice of ring/core; absent-in-both class is undefined and omitted.",
+  "aggregation": "Average views within each specimen, then give each specimen equal weight.",
+  "interval": "95% percentile bootstrap over test specimens, conditional on this synthetic cohort and fitted model.",
+  "limitations": [
+    "One training seed, not a multi-seed benchmark.",
+    "No validation on real scientific acquisitions.",
+    "Perturbations alter intensities only; their severity is not a calibrated microscope simulation.",
+    "Reproducibility across hardware and dependency versions is not guaranteed."
+  ]
+}
